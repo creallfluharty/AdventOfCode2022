@@ -5,13 +5,7 @@ with open("input.txt") as f:
     # Assuming every directory is visited exactly once
     def sol():
         size = 0
-        while True:
-            try:
-                cmd, *res = next(cmd_res)
-            except StopIteration:
-                dir_sizes.append(size)
-                return size
-
+        for cmd, *res in cmd_res:
             if cmd.startswith('cd '):
                 to = cmd[3:]
                 if to == '..':
@@ -28,6 +22,9 @@ with open("input.txt") as f:
 
                     s, name = line.split()
                     size += int(s)
+
+        dir_sizes.append(size)
+        return size
 
     used = sol()
     need_to_free = used - 40000000  # 30000000 - (70000000 - used)

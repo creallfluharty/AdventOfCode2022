@@ -5,12 +5,7 @@ with open("input.txt") as f:
     def sol():
         size = 0
         small_children_size = 0
-        while True:
-            try:
-                cmd, *res = next(cmd_res)
-            except StopIteration:
-                return small_children_size, size
-
+        for cmd, *res in cmd_res:
             if cmd.startswith('cd '):
                 to = cmd[3:]
                 if to == '..':
@@ -29,5 +24,7 @@ with open("input.txt") as f:
 
                     s, name = line.split()
                     size += int(s)
+
+        return small_children_size, size
 
     print(sol()[0])
