@@ -1,27 +1,28 @@
 with open("input.txt") as f:
     cmd_res = ([line for line in cr.split('\n') if line] for cr in f.read().split('$ ') if cr)
-    dir_sizes = []
 
-    # Assuming every directory is visited exactly once
-    def sol():
-        size = 0
-        for cmd, *res in cmd_res:
-            if cmd.startswith('cd '):
-                to = cmd[3:]
-                if to == '..':
-                    dir_sizes.append(size)
-                    return size
+dir_sizes = []
 
-                child_size = sol()
-                size += child_size
+# Assuming every directory is visited exactly once
+def sol():
+    size = 0
+    for cmd, *res in cmd_res:
+        if cmd.startswith('cd '):
+            to = cmd[3:]
+            if to == '..':
+                dir_sizes.append(size)
+                return size
 
-            else: # ls
-                for line in res:
-                    if line.startswith('dir'):
-                        continue  # as long as we never cd into a dir that doesn't exist, this information is redundant
+            child_size = sol()
+            size += child_size
 
-                    s, name = line.split()
-                    size += int(s)
+        else: # ls
+            for line in res:
+                if line.startswith('dir'):
+                    continue  # as long as we never cd into a dir that doesn't exist, this information is redundant
+
+                s, name = line.split()
+                size += int(s)
 
         dir_sizes.append(size)
         return size
